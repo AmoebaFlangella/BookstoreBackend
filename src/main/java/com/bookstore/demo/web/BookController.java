@@ -1,17 +1,28 @@
 package com.bookstore.demo.web;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import com.bookstore.demo.domain.Book;
+import com.bookstore.demo.domain.BookRepository;
 
-import ch.qos.logback.core.model.Model;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+
 
 @Controller
-@ResponseBody
 public class BookController {
 	
-	@GetMapping("/index")
-	public String index(Model model) {
-		return "This is the main index";
-	}
+	private BookRepository bookRepository;
+	
+	public BookController(BookRepository bookRepository) {
+        this.bookRepository = bookRepository;
+    }
+
+    @GetMapping("/booklist")
+    public String showBookList(Model model) {
+        Iterable<Book> bookList = bookRepository.findAll();
+
+        model.addAttribute("bookList", bookList);
+
+        return "booklist";
+    }
 }
