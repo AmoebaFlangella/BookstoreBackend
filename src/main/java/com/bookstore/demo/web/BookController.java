@@ -2,6 +2,8 @@ package com.bookstore.demo.web;
 
 import com.bookstore.demo.domain.Book;
 import com.bookstore.demo.domain.BookRepository;
+import com.bookstore.demo.domain.Category;
+import com.bookstore.demo.domain.CategoryRepository;
 
 import java.util.Optional;
 
@@ -16,10 +18,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class BookController {
 
 	private BookRepository bookRepository;
+	private CategoryRepository categoryRepository;
 
-	public BookController(BookRepository bookRepository) {
+	public BookController(BookRepository bookRepository, CategoryRepository categoryRepository) {
 		this.bookRepository = bookRepository;
+		this.categoryRepository = categoryRepository;
 	}
+	
 
 	@GetMapping("/booklist")
 	public String showBookList(Model model) {
@@ -33,6 +38,8 @@ public class BookController {
 	@GetMapping("/addbook")
 	public String showAddBookForm(Model model) {
 		model.addAttribute("book", new Book());
+		Iterable<Category> categories = categoryRepository.findAll();
+		model.addAttribute("categories", categories);
 		return "addbook";
 	}
 
