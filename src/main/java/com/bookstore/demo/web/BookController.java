@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
@@ -82,5 +83,10 @@ public class BookController {
 	@GetMapping("/book/{id}")
 	public @ResponseBody Optional<Book> findStudentRest(@PathVariable Long id){
 		return bookRepository.findById(id);
+	}
+	
+	@RequestMapping("/login")
+	public String login() {
+		return "login";
 	}
 }
