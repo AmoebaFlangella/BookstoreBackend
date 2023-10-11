@@ -5,19 +5,25 @@ import com.bookstore.demo.domain.BookRepository;
 import com.bookstore.demo.domain.Category;
 import com.bookstore.demo.domain.CategoryRepository;
 
+import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class BookController {
 
+	@Autowired
 	private BookRepository bookRepository;
+	
+	@Autowired
 	private CategoryRepository categoryRepository;
 
 	public BookController(BookRepository bookRepository, CategoryRepository categoryRepository) {
@@ -66,5 +72,15 @@ public class BookController {
 	public String editingPage(@ModelAttribute Book book) {
 		bookRepository.save(book);
 		return "redirect:/booklist";
+	}
+	
+	@GetMapping("/books")
+	public @ResponseBody List<Book> bookListRest() {
+		return (List<Book>) bookRepository.findAll();
+	}
+	
+	@GetMapping("/book/{id}")
+	public @ResponseBody Optional<Book> findStudentRest(@PathVariable Long id){
+		return bookRepository.findById(id);
 	}
 }
